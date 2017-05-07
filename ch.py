@@ -22,18 +22,18 @@ def get_point(points, cmp, axis):
 
     :cmp: Integer less than or greater than 0, representing respectively
     < and > singhs.
-    :returns: a points attending the parameters restrictions.
+    :returns: the index of the point matching the constraints
     """
-    if cmp < 0:
-        inf = MAX
-    else:
-        inf = MIN
+    index = 0
+    for i in range(len(points)):
+        if cmp < 0:
+            if points[i][axis] < points[index][axis]:
+                index = i
+        else:
+            if points[i][axis] > points[index][axis]:
+                index = i
 
-    point = [0, inf]
-    for p in points:
-        if p[axis] > point[axis]:
-            point = p
-    return point
+    return index
 
 
 def higher_y(points):
@@ -44,35 +44,29 @@ def lower_y(points):
     return get_point(points, -1, 1)
 
 
-def higher_x(points):
-    return get_point(points, 1, 0)
-
-
-def lower_x(points):
-    return get_point(points, -1, 0)
-
-
-def split(list):
-    l = []
-    r = []
-
-    lx = lower_x(list)
-    hx = higher_x(list)
-
-    midle = (hx[0] - lx[0])/2
-
-    for p in list:
-        if p[0] < midle:
-            l.append(p)
-        else:
-            r.append(p)
-
-    return l, r
-
-
 def f(left_p, right_p, x):
     a = (right_p[1] - left_p[1])/(right_p[0] - left_p[0])
     return a*x + (left_p[1] - a*left_p[0])
+
+
+def above(left_p, right_p, point):
+    """Tells a given point is above or not the function func.
+    """
+    return point[1] > f(left_p, right_p, point[0])
+
+
+def below(left_p, right_p, point):
+    """Tells a given point is above or not the function func.
+    """
+    return point[1] < f(left_p, right_p, point[0])
+
+
+def next(points, index):
+    return index + 1 if index < len(points) - 1 else 0
+
+
+def prev(points, index):
+    return index - 1 if index > 0 else len(points) - 1
 
 
 def points_to_connect_upper(left, right):
@@ -82,43 +76,49 @@ def points_to_connect_upper(left, right):
     :returns: the uppermost point of left and right
 
     """
-    left_p = higher_y(left)
-    right_p = higher_y(right)
+    # indexes
+    l = higher_y(left)
+    r = higher_y(right)
 
-    if left_p[1] >= right_p[1]:
-        for p in left:
-            if left_p[0] <= p[0] and p[0] < right_p[0] and p[1] >= f(p[0]):
-                left_p = p
+    if left[l][1] >= right[r][1]:
+        while above(left[l], right[r], left[next(left, l)]):
+            l = next(left, l)
+        while below(left[l], right[next(right, r)], right[r]):
+            r = next(right, r)
 
-    if left_p[1] <= right_p[1]:
-        for p in right:
-            if left_p[0] <= p[0] and p[0] < right_p[0] and p[1] >= f(p[0]):
-                right_p = p
+    if left[l][1] <= right[r][1]:
+        while above(left[l], right[r], right[prev(right, r)]):
+            r = prev(right, r)
+        while below(left[l], left[prev(left, l)], right[r]):
+            l = prev(left, l)
 
-    return left_p, right_p
+    return l, r
 
 
 def points_to_connect_lower(left, right):
-    """Determine which points must be connected on the lower bound of left and
+    """Determine which points must be connected on the upper bound of left and
     right points list.
 
-    :returns: the lowermost point of left and right
+    :returns: the uppermost point of left and right
 
     """
-    left_p = higher_y(left)
-    right_p = higher_y(right)
+    # indexes
+    l = lower_y(left)
+    r = lower_y(right)
 
-    if left_p[1] >= right_p[1]:
-        for p in left:
-            if left_p[0] <= p[0] and p[0] < right_p[0] and p[1] >= f(p[0]):
-                left_p = p
+    if left[l][1] >= right[r][1]:
+        while below(left[l], right[r], right[next(right, r)]):
+            r = next(right, r)
+        while above(left[next(left, l)], right[r], left[l]):
+            l = next(left, l)
 
-    if left_p[1] <= right_p[1]:
-        for p in right:
-            if left_p[0] <= p[0] and p[0] < right_p[0] and p[1] >= f(p[0]):
-                right_p = p
+    if left[l][1] <= right[r][1]:
+        while below(left[l], right[r], left[prev(left, l)]):
+            l = prev(left, l)
+        while above(left[l], right[prev(right, r)], right[r]):
+            r = prev(right, r)
 
-    return left_p, right_p
+    return l, r
 
 
 def combine(left, right):
@@ -150,17 +150,19 @@ def combine(left, right):
 
 
 def ch(l):
+    # if (1 ponto):
+
     l = ch(l[:len(l)/2])
     r = ch(l[len(l)/2:])
     return combine(l, r)
 
 
-n = int(input())
-print(n)
+# n = int(input())
+# print(n)
 
-for i in range(0, int(n)):
-    a, b = [int(s) for s in input().split(" ")]
-    insert(points, [a, b, i])
+# for i in range(0, int(n)):
+    # a, b = [int(s) for s in input().split(" ")]
+    # insert(points, [a, b, i])
 
 
-print(points)
+# print(points)
