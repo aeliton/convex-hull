@@ -62,8 +62,13 @@ class ChTest(unittest.TestCase):
     def test_points_to_connect_lower_outer_move(self):
         p1 = [[5, 5], [3, 7], [4, 8]]
         p2 = [[6, 2], [7, 9]]
-
         self.assertEqual((1, 0), ch.points_to_connect_lower(p1, p2))
+
+    def test_combine(self):
+        p1 = [[4, 4], [2, 5], [0, 7], [3, 9], [6, 8]]
+        p2 = [[9, 1], [7, 2], [6, 4], [9, 6]]
+        h = [[2, 5], [0, 7], [3, 9], [6, 8], [9, 6], [9, 1], [7, 2]]
+        self.assertEqual(h, ch.combine(p1, p2))
 
 
 if __name__ == '__main__':

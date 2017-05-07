@@ -125,33 +125,28 @@ def combine(left, right):
     upper_l, upper_r = points_to_connect_upper(left, right)
     lower_l, lower_r = points_to_connect_lower(left, right)
 
-    # get the points on the left side of lower left and upper left
-    for i in range(len(left)):
-        if left[i] == lower_l:
-            break
-
     hull = []
-    while left[i] != upper_l:
+
+    i = lower_l
+    while True:
         hull.append(left[i])
-        i = i-1 if i > 0 else len(left)
-    hull.append(upper_l)
-
-    # get the points on the right side of upper right and lower right
-    for i in range(len(right)):
-        if right[i] == upper_r:
+        if i == upper_l:
             break
+        i = next(left, i)
 
-    while right[i] != lower_r:
+    i = upper_r
+    while True:
         hull.append(right[i])
-        i = i+1 if i < len(right) else 0
-    hull.append(lower_r)
+        if i == lower_r:
+            break
+        i = next(right, i)
 
     return hull
 
 
 def ch(l):
-    # if (1 ponto):
-
+    if len(l) == 1:
+        return l
     l = ch(l[:len(l)/2])
     r = ch(l[len(l)/2:])
     return combine(l, r)
