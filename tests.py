@@ -79,6 +79,16 @@ class ChTest(unittest.TestCase):
         points = [[2, 2], [2, 4]]
         self.assertEqual([[2, 2], [2, 4]], ch.convex_hull(points))
 
+    def test_convex_hull_1(self):
+        points = [[1, 1], [2, 5], [3, 3], [5, 3], [3, 2], [2, 2]]
+        self.assertEqual([[1, 1], [2, 5], [5, 3], [3, 2]],
+                         ch.convex_hull(points))
+
+    def test_convex_hull_two_squares(self):
+        points = [[4, 6], [6, 6], [4, 8], [6, 8],
+                  [3, 4], [1, 4], [1, 1], [3, 1]]
+        hull = [[3, 1], [1, 1], [1, 4], [4, 8], [6, 8], [6, 6]]
+        self.assertEqual(hull, ch.convex_hull(points))
 
 if __name__ == '__main__':
     unittest.main()
