@@ -70,6 +70,15 @@ class ChTest(unittest.TestCase):
         h = [[2, 5], [0, 7], [3, 9], [6, 8], [9, 6], [9, 1], [7, 2]]
         self.assertEqual(h, ch.combine(p1, p2))
 
+    def test_combine_two_points_same_x(self):
+        p1 = [[2, 2]]
+        p2 = [[2, 4]]
+        self.assertEqual([[2, 2], [2, 4]], ch.combine(p1, p2))
+
+    def test_convex_hull(self):
+        points = [[2, 2], [2, 4]]
+        self.assertEqual([[2, 2], [2, 4]], ch.convex_hull(points))
+
 
 if __name__ == '__main__':
     unittest.main()

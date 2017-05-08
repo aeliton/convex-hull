@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from functools import cmp_to_key
+
 points = []
 
 MAX = 10001
@@ -52,14 +54,15 @@ def f(left_p, right_p, x):
 def above(left_p, right_p, point):
     """Tells a given point is above or not the function func.
     """
-    return point[1] > f(left_p, right_p, point[0])
+    return False if left_p[0] == right_p[0] else point[1] > f(left_p, right_p,
+                                                              point[0])
 
 
 def below(left_p, right_p, point):
     """Tells a given point is above or not the function func.
     """
-    return point[1] < f(left_p, right_p, point[0])
-
+    return False if left_p[0] == right_p[0] else point[1] < f(left_p, right_p,
+                                                              point[0])
 
 def next(points, index):
     return index + 1 if index < len(points) - 1 else 0
@@ -127,30 +130,49 @@ def combine(left, right):
 
     hull = []
 
-    i = lower_l
-    while True:
-        hull.append(left[i])
-        if i == upper_l:
-            break
-        i = next(left, i)
+    if lower_l == upper_l:
+        hull.append(left[lower_l])
+    else:
+        i = lower_l
+        while True:
+            hull.append(left[i])
+            if i == upper_l:
+                break
+            i = next(left, i)
 
-    i = upper_r
-    while True:
-        hull.append(right[i])
-        if i == lower_r:
-            break
-        i = next(right, i)
+    if lower_r == upper_r:
+        hull.append(right[lower_r])
+    else:
+        i = upper_r
+        while True:
+            hull.append(right[i])
+            if i == lower_r:
+                break
+            i = next(right, i)
 
     return hull
 
 
-def ch(l):
-    if len(l) == 1:
-        return l
-    l = ch(l[:len(l)/2])
-    r = ch(l[len(l)/2:])
-    return combine(l, r)
+def ch(points):
+    if len(points) == 1:
+        return points
+    left = ch(points[:len(points)//2])
+    right = ch(points[len(points)//2:])
+    return combine(left, right)
 
+
+def cmp(a, b):
+    if a[0] == b[0]:
+        return a[1] - b[1]
+    return a[0] - b[0]
+
+
+def sort(points):
+    return sorted(points, key=cmp_to_key(cmp))
+
+
+def convex_hull(points):
+    return ch(sort(points))
 
 # n = int(input())
 # print(n)
