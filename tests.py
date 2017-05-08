@@ -10,15 +10,6 @@ class ChTest(unittest.TestCase):
         self.points = [[0, 7], [2, 5], [4, 4], [3, 9], [6, 8], [9, 6], [6, 4],
                        [7, 2], [9, 1]]
 
-    def test_insert(self):
-        points = []
-        ch.insert(points, [9, 0])
-        ch.insert(points, [1, 9])
-        ch.insert(points, [5, 4])
-        ch.insert(points, [2, 4])
-
-        self.assertEqual(points, [[1, 9], [2, 4], [5, 4], [9, 0]])
-
     def test_lower_y(self):
         self.assertEqual(8, ch.lower_y(self.points))
 

@@ -8,17 +8,6 @@ MAX = 10001
 MIN = -1
 
 
-def insert(points, p):
-    """ Inserts p in the points list.
-    """
-    position = len(points) + 1
-    for i in range(0, len(points)):
-        if points[i][0] > p[0]:
-            position = i
-            break
-    return points.insert(position, p)
-
-
 def get_point(points, cmp, axis):
     """ Get a point based on values of either x or y axys.
 
