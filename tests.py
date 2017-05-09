@@ -45,6 +45,18 @@ class ChTest(unittest.TestCase):
         p2 = [[9, 1], [7, 2], [6, 4], [9, 6]]
         self.assertEqual((4, 3), ch.points_to_connect_upper(p1, p2))
 
+    def test_points_to_connect_upper_(self):
+        p1 = [[1, 19], [2, 30], [18, 28], [28, 10], [5, 1]]
+        p2 = [[37, 12], [29, 16], [39, 42], [50, 45]]
+
+        self.assertEqual((1, 2), ch.points_to_connect_upper(p1, p2))
+
+    def test_points_to_connect_lower_(self):
+        p1 = [[1, 19], [2, 30], [18, 28], [28, 10], [5, 1]]
+        p2 = [[37, 12], [29, 16], [39, 42], [50, 45]]
+
+        self.assertEqual((4, 0), ch.points_to_connect_lower(p1, p2))
+
     def test_points_to_connect_lower_inner_move(self):
         p1 = [[4, 4], [2, 5], [0, 7], [3, 9], [6, 8]]
         p2 = [[9, 1], [7, 2], [6, 4], [9, 6]]
@@ -65,6 +77,13 @@ class ChTest(unittest.TestCase):
         p1 = [[2, 2]]
         p2 = [[2, 4]]
         self.assertEqual([[2, 2], [2, 4]], ch.combine(p1, p2))
+
+    def test_combine_two_points_same_x2(self):
+        p1 = [[1, 19], [2, 30], [18, 28], [28, 10], [5, 1]]
+        p2 = [[37, 12], [29, 16], [39, 42], [50, 45]]
+        hull = [[5, 1], [1, 19], [2, 30], [39, 42], [50, 45], [37, 12]]
+
+        self.assertEqual(hull, ch.combine(p1, p2))
 
     def test_convex_hull(self):
         points = [[2, 2], [2, 4]]

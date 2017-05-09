@@ -35,9 +35,8 @@ def lower_y(points):
     return get_point(points, -1, 1)
 
 
-def f(left_p, right_p, x):
-    a = (right_p[1] - left_p[1])/(right_p[0] - left_p[0])
-    return a*x + (left_p[1] - a*left_p[0])
+def f(p1, p2, x):
+    return ((p2[1] - p1[1])*x + (p2[0]*p1[1] - p1[0]*p2[1]))/(p2[0] - p1[0])
 
 
 def above(left_p, right_p, point):
@@ -52,6 +51,7 @@ def below(left_p, right_p, point):
     """
     return False if left_p[0] == right_p[0] else point[1] < f(left_p, right_p,
                                                               point[0])
+
 
 def next(points, index):
     return index + 1 if index < len(points) - 1 else 0
@@ -73,15 +73,19 @@ def points_to_connect_upper(left, right):
     r = higher_y(right)
 
     if left[l][1] >= right[r][1]:
-        while above(left[l], right[r], left[next(left, l)]):
-            l = next(left, l)
-        while below(left[l], right[next(right, r)], right[r]):
-            r = next(right, r)
+        next_l = next(left, l)
+        while l != next_l and above(left[l], right[r], left[next_l]):
+            l = next_l
+        next_r = next(right, r)
+        while r != next_r and below(left[l], right[next_r], right[r]):
+            r = next_r
 
     if left[l][1] <= right[r][1]:
-        while above(left[l], right[r], right[prev(right, r)]):
-            r = prev(right, r)
-        while below(left[l], left[prev(left, l)], right[r]):
+        prev_r = prev(right, r)
+        while r != prev_r and above(left[l], right[r], right[prev_r]):
+            r = prev_r
+        prev_l = prev(left, l)
+        while l != prev_l and below(left[prev_l], right[r], left[l]):
             l = prev(left, l)
 
     return l, r
@@ -99,16 +103,20 @@ def points_to_connect_lower(left, right):
     r = lower_y(right)
 
     if left[l][1] >= right[r][1]:
-        while below(left[l], right[r], right[next(right, r)]):
-            r = next(right, r)
-        while above(left[next(left, l)], right[r], left[l]):
-            l = next(left, l)
+        next_r = next(right, r)
+        while r != next_r and below(left[l], right[r], right[next_r]):
+            r = next_r
+        next_l = next(left, l)
+        while l != next_l and above(left[next_l], right[r], left[l]):
+            l = next_l
 
     if left[l][1] <= right[r][1]:
-        while below(left[l], right[r], left[prev(left, l)]):
-            l = prev(left, l)
-        while above(left[l], right[prev(right, r)], right[r]):
-            r = prev(right, r)
+        prev_l = prev(left, l)
+        while l != prev_l and below(left[l], right[r], left[prev_l]):
+            l = prev_l
+        prev_r = prev(right, r)
+        while r != prev_r and above(left[l], right[prev_r], right[r]):
+            r = prev_r
 
     return l, r
 
@@ -150,6 +158,16 @@ def ch(points):
     return combine(left, right)
 
 
+def ch2(points, draw):
+    if len(points) == 1:
+        return points
+    left = ch2(points[:len(points)//2], draw)
+    right = ch2(points[len(points)//2:], draw)
+    hull = combine(left, right)
+    draw(hull)
+    return hull
+
+
 def cmp(a, b):
     if a[0] == b[0]:
         return a[1] - b[1]
@@ -160,15 +178,9 @@ def sort(points):
     return sorted(points, key=cmp_to_key(cmp))
 
 
+def convex_hull2(points, draw):
+    return ch2(sort(points), draw)
+
+
 def convex_hull(points):
     return ch(sort(points))
-
-# n = int(input())
-# print(n)
-
-# for i in range(0, int(n)):
-    # a, b = [int(s) for s in input().split(" ")]
-    # insert(points, [a, b, i])
-
-
-# print(points)
