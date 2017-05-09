@@ -4,6 +4,12 @@ from random import randint
 
 n = input()
 
+l = []
 print(n)
-for i in range(n):
-    print("%d %d" % (randint(1, 50), randint(1, 50)))
+while len(l) < n:
+    pair = (randint(1, 100), randint(1, 100))
+    if pair not in l:
+        l.append(pair)
+
+for p in l:
+    print("%d %d" % p)
