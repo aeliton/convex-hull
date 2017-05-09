@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import ch
 import pygame, sys
@@ -44,7 +44,7 @@ n = int(input())
 points = []
 
 for i in range(0, int(n)):
-    ent = raw_input().split(" ")
+    ent = input().split(" ")
     a, b = [int(s) for s in ent]
     pygame.draw.circle(DISPLAYSURF, BLUE, (off(a), 540 - off(b)), 1, 0)
     points.append([a, b])

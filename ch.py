@@ -46,11 +46,10 @@ def above(left_p, right_p, point):
                                                               point[0])
 
 
-def below(left_p, right_p, point):
+def below(a, b, point):
     """Tells a given point is above or not the function func.
     """
-    return False if left_p[0] == right_p[0] else point[1] < f(left_p, right_p,
-                                                              point[0])
+    return False if a[0] == b[0] else point[1] < f(a, b, point[0])
 
 
 def next(points, index):

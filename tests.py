@@ -51,6 +51,11 @@ class ChTest(unittest.TestCase):
 
         self.assertEqual((1, 2), ch.points_to_connect_upper(p1, p2))
 
+    def test_points_to_connect_upper_convex(self):
+        p1 = [[2, 4], [1, 16], [4, 41], [21, 44], [24, 15], [21, 1]]
+        p2 = [[27, 1], [24, 22], [25, 44], [39, 49], [44, 50], [45, 50], [50, 40], [49, 24], [46, 10], [41, 5]]
+        self.assertEqual((2, 3), ch.points_to_connect_upper(p1, p2))
+
     def test_points_to_connect_lower_(self):
         p1 = [[1, 19], [2, 30], [18, 28], [28, 10], [5, 1]]
         p2 = [[37, 12], [29, 16], [39, 42], [50, 45]]
