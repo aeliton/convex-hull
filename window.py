@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import ch
-import pygame, sys
-from pygame.locals import *
+import pygame
+import sys
 
 pygame.init()
 
@@ -11,17 +11,19 @@ DISPLAYSURF = pygame.display.set_mode((540, 540), 0, 32)
 pygame.display.set_caption('Drawing')
 
 # set up the colors
-BLACK = (  0,   0,   0)
+BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-RED   = (255,   0,   0)
-GREEN = (  0, 255,   0)
-BLUE  = (  0,   0, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 
 # draw on the surface object
 DISPLAYSURF.fill(WHITE)
 
+
 def off(x):
     return x * 10 + 10
+
 
 def draw(hull):
     x2, y2 = [off(x) for x in hull[0]]
@@ -54,7 +56,7 @@ ch.convex_hull2(points, append_hull)
 # run the game loop
 while True:
     for event in pygame.event.get():
-        if event.type == QUIT:
+        if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         elif len(hulls) > 0 and event.type == pygame.KEYUP:
